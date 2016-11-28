@@ -1,0 +1,7 @@
+Progress Review
+
+What remains to be done: 
+
+1. Shadows
+2. Lighting with Attenuation (for the floor)
+3. Skybox
