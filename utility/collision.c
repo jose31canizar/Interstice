@@ -15,19 +15,20 @@ double rotate_z(double x, double z, double th) {
 
 void generate_scene_with_collision(double baluster_positions[][3], double wx, double wy, double wz, double th, int grab) {
 
+
         generate_scene(baluster_positions, wx, wy, wz);
 
         int i;
         int j;
+
+        double a = 10.0; // amount of grab movement
         // int inc = 45.0;
         double r = 5.0; //object box width and height
-        double box = 12.0; //character width and height
-        double d = 19.0; // collision distance
+        double box = 10.0; //character width and height
+        double d = 5.0; // collision distance
 
         double ax = box; //width box
         double az = box; //height box
-
-        double corner = 2.0;
 
         //four corners
         double x1 = rotate_x(-ax, az, th);
@@ -49,13 +50,14 @@ void generate_scene_with_collision(double baluster_positions[][3], double wx, do
         double a3 = sqrt(pow(x3 - x4, 2.0) + pow(z3 - z4, 2.0));
         double a4 = sqrt(pow(x4 - x1, 2.0) + pow(z4 - z1, 2.0));
 
+        //character bounding box drawn here
         //glPushMatrix();
-        glBegin(GL_QUAD_STRIP);
-        glVertex3f(x1, 2.0, z1);
-        glVertex3f(x2, 2.0, z2);
-        glVertex3f(x3, 2.0, z3);
-        glVertex3f(x4, 2.0, z4);
-        glEnd();
+        // glBegin(GL_QUAD_STRIP);
+        // glVertex3f(x1, 2.0, z1);
+        // glVertex3f(x2, 2.0, z2);
+        // glVertex3f(x3, 2.0, z3);
+        // glVertex3f(x4, 2.0, z4);
+        // glEnd();
         //glPopMatrix();
 
         double ox;
@@ -78,29 +80,26 @@ void generate_scene_with_collision(double baluster_positions[][3], double wx, do
 
         double A = a1*a2; //area of collision box
 
-
+        double still_grabbing = 0;
 
         for(i = 0; i < 16; i += 1)
         {
-                glColor3f(0.97, 0.8, 0.94);
-                glBegin(GL_QUAD_STRIP);
-                glVertex3f(baluster_positions[i][0] + r + wx, 4.0, baluster_positions[i][2] - r + wz);
-                glVertex3f(baluster_positions[i][0] + r + wx, 4.0, baluster_positions[i][2] + r + wz);
-                glVertex3f(baluster_positions[i][0] - r + wx, 4.0, baluster_positions[i][2] - r + wz);
-                glVertex3f(baluster_positions[i][0] - r + wx, 4.0, baluster_positions[i][2] + r + wz);
-                glEnd();
+                //object bounding box drawn
+                // glColor3f(0.97, 0.8, 0.94);
+                // glBegin(GL_QUAD_STRIP);
+                // glVertex3f(baluster_positions[i][0] + r + wx, 4.0, baluster_positions[i][2] - r + wz);
+                // glVertex3f(baluster_positions[i][0] + r + wx, 4.0, baluster_positions[i][2] + r + wz);
+                // glVertex3f(baluster_positions[i][0] - r + wx, 4.0, baluster_positions[i][2] - r + wz);
+                // glVertex3f(baluster_positions[i][0] - r + wx, 4.0, baluster_positions[i][2] + r + wz);
+                // glEnd();
 
-                if(grabbed == i && grab) {
-                        baluster_positions[i][0] = -wx + 4.0*Sin(th);
-                        baluster_positions[i][2] = -wz - 4.0*Cos(th);
-                        break;
+                if (grabbed == i && grab) {
+                        baluster_positions[i][0] = -wx + a*Sin(th);
+                        baluster_positions[i][2] = -wz - a*Cos(th);
+                        still_grabbing = 1;
                 }
 
-
                 for(j = 0; j < 4; j+= 1) {
-                        // double ox = r*Cos((double) j) + baluster_positions[i][0] + wx;
-                        // double oz = r*Sin((double) j) + baluster_positions[i][2] + wz;
-
 
                         //object box points from viewport perspective
                         if (j == 0) {
@@ -129,84 +128,30 @@ void generate_scene_with_collision(double baluster_positions[][3], double wx, do
                         u3 = (a3 + b3 + b4)/2.0;
                         u4 = (a4 + b4 + b1)/2.0;
 
-                        //
+
                         A1 = sqrt(u1*(u1 - a1)*(u1 - b1)*(u1 - b2));
                         A2 = sqrt(u2*(u2 - a2)*(u2 - b2)*(u2 - b3));
                         A3 = sqrt(u3*(u3 - a3)*(u3 - b3)*(u3 - b4));
                         A4 = sqrt(u4*(u4 - a4)*(u4 - b4)*(u4 - b1));
 
-                        //collision
-                        // if (ox < ax && ox > -ax && oz < az && oz > -az) {
                         if(A == A1 + A2 + A3 + A4) {
-                                // if (ox > ax/corner && oz > az/corner) {
-                                //         //top right
-                                //         baluster_positions[i][2] += d*0.707;
-                                //         baluster_positions[i][0] += d*0.707;
-                                // break;
-                                //
-                                // } else if (ox > ax/corner && oz < -az/corner) {
-                                //         //top left
-                                //         baluster_positions[i][2] -= d*0.707;
-                                //         baluster_positions[i][0] += d*0.707;
-                                //         // break;
-                                //
-                                // } else if (ox < -ax/corner && oz < -az/corner) {
-                                //         //bottom left
-                                //         baluster_positions[i][2] -= d*0.707;
-                                //         baluster_positions[i][0] -= d*0.707;
-                                //         // break;
-                                //
-                                // } else if (ox < -ax/corner && oz > az/corner) {
-                                //         //bottom right
-                                //
-                                //         baluster_positions[i][2] += d*0.707;
-                                //         baluster_positions[i][0] -= d*0.707;
-                                //         // break;
 
-                                //}
-                                //else
-                                //if(ox < ax && ox > 0.0 && fabs(oz) <= fabs(ox)) {
-                                //top
-                                // baluster_positions[i][2] -= d;
-                                if (grab) {
+                                //first grab
+                                if (grab && grabbed != i && !still_grabbing) {
                                         grabbed = i;
-                                        baluster_positions[i][0] = -wx + 4.0*Sin(th);
-                                        baluster_positions[i][2] = -wz - 4.0*Cos(th);
+
+                                } else if (still_grabbing) {
+                                        //still grabbing, so push others
+                                        baluster_positions[i][0] += d*Sin(th);
+                                        baluster_positions[i][2] -= d*Cos(th);
                                 } else {
+                                        still_grabbing = 0;
+                                        //push away
                                         grabbed = -1;
                                         baluster_positions[i][0] += d*Sin(th);
                                         baluster_positions[i][2] -= d*Cos(th);
                                 }
-
-
-                                //break;
-
-
-
-                                //} else if(oz < az && oz > 0.0 && fabs(oz) > fabs(ox)) {
-                                //left side
-                                // baluster_positions[i][0] -= d;
-                                // baluster_positions[i][0] -= d*Cos(th);
-                                // baluster_positions[i][2] -= d*Sin(th);
-                                //break;
-
-
-                                //}   //delete
-                                // } else if(ox > -ax && ox <= 0.0 && fabs(oz) <= fabs(ox)) {
-                                //         //left side
-                                //         baluster_positions[i][2] += d;
-                                //         break;
-                                //
-                                // } else if(oz > -az && oz <= 0.0 && fabs(oz) > fabs(ox)) {
-                                //         //bottom
-                                //         baluster_positions[i][0] += d;
-                                //         break;
-                                // }
                         }
                 }
-
-
-
-
         }
 }

@@ -51,6 +51,7 @@ void icosahedron(double x,double y,double z, struct statuses *status, GLfloat *B
         // }
 
         glPushMatrix();
+        glTranslated(x, y, z);
         // glLoadIdentity();
         // glMultMatrixf(BoxMat2);
         glRotatef(-(status->wr), status->vx, 0.0, status->vz);

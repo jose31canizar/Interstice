@@ -64,5 +64,6 @@ double bezier_x(double x1, double x2, double x3, double x4, double t);
 double bezier_y(double y1, double y2, double y3, double y4, double t);
 void bezier_curve(double f, double x, double y, double z, double *curve);
 void baluster(double f, double s, double x, double y, double z, double *curve);
+void baluster_tex(double f, double s, double x, double y, double z, double *curve, int tex);
 
 #endif

@@ -1,4 +1,4 @@
-# Example SDL21
+# Interstice
 EXE=final
 
 # Main target
@@ -11,18 +11,18 @@ ifeq "$(OS)" "Windows_NT"
 CFLG=-O3 -Wall
 CLEAN=del *.exe *.o *.a *.txt
 SDL_CFLAGS=-IC:\mingw_dev_lib\include\SDL2 -LC:\mingw_dev_lib\lib -w -Wl,-subsystem,windows
-SDL_LDFLAGS=-lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer
+SDL_LDFLAGS=-lmingw32 -lSDL2main -lSDL2
 else
 #  OSX
 ifeq "$(shell uname)" "Darwin"
 #CONFF=$(shell $(sdl2-config --cflags))
 #CONFL=$(shell $(sdl2-config --libs))
-SDL_CFLAGS :=`sdl2-config --cflags`
-SDL_LDFLAGS :=`sdl2-config --libs`
+#SDL_CFLAGS :=`sdl2-config --cflags SDL2_ttf-config --cflags`
+#SDL_LDFLAGS :=`sdl2-config --libs SDL2_ttf-config --libs`
 # -I/usr/include/SDL2 -D_THREAD_SAFE
 #
 #CFLG=-O3 -Wall -Wno-deprecated-declarations -I/Library/Frameworks/SDL2.framework/Headers -I/Library/Frameworks/SDL2_mixer.framework/Headers -F/Library/Frameworks -framework OpenGL
-CFLG=-O3 -Wall -Wno-deprecated-declarations -I SDL2.framework/Headers -I SDL2_mixer.framework/Headers -F/Library/Frameworks -framework OpenGL
+CFLG=-O3 -Wall -Wno-deprecated-declarations -I SDL2.framework/Headers -F/Library/Frameworks -framework OpenGL -I /Library/Frameworks/Headers
 
 SDL_CFLAGS=-I/usr/local/include -L/usr/local/lib
 SDL_LDFLAGS=-lSDL2
@@ -68,7 +68,7 @@ collision.o: utility/collision.c utility/collision.h utility/randomizer.h
 CSCIx229.a: fatal.o loadtexbmp.o print.o project.o errcheck.o object.o
 	ar -rcs $@ $^
 #
-sdl21.o: sdl21.c CSCIx229.h
+main.o: main.c CSCIx229.h
 
 # Compile rules
 .c.o:
@@ -78,8 +78,8 @@ sdl21.o: sdl21.c CSCIx229.h
 
 #  Link
 # -lSDL -lSDL_mixer -lGLU -lGL -lm
-final: sdl21.o CSCIx229.a objects/character.o objects/floors.o objects/parts.o objects/jars.o objects/bezier.o objects/balusters.o objects/columns.o utility/randomizer.o utility/save_progress.o utility/collision.o
-	gcc sdl21.c objects/character.c objects/floors.c objects/parts.c objects/jars.c objects/bezier.c objects/balusters.c objects/columns.c utility/randomizer.c utility/save_progress.c utility/collision.c CSCIx229.a $(CFLG) -o $@ $(SDL_CFLAGS) $(SDL_LDFLAGS)
+final: main.o CSCIx229.a objects/character.o objects/floors.o objects/parts.o objects/jars.o objects/bezier.o objects/balusters.o objects/columns.o utility/randomizer.o utility/save_progress.o utility/collision.o
+	gcc main.c objects/character.c objects/floors.c objects/parts.c objects/jars.c objects/bezier.c objects/balusters.c objects/columns.c utility/randomizer.c utility/save_progress.c utility/collision.c CSCIx229.a $(CFLG) -o $@ $(SDL_CFLAGS) $(SDL_LDFLAGS)
 
 #  Clean
 clean:

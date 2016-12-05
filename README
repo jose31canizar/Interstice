@@ -5,15 +5,32 @@ I N T E R S T I C E
 Jose Canizares
 CSCI4229/5229 Fall 2016
 
-Educational game teaching the quicksort algorithm with marble and granite objects.
+Run into the random objects and move them around!
+Use 'G' to grab onto them and drag them to the blue squares to collect symbols!
+Notice you can use multiple keys and drag the screen around with the mouse.
+All objects are hand-made. (The textures are the only things not mine).
+
 
 Instructions:
 
 MAC: brew install sdl2
-LINUX: apt-get install freeglut3-dev
+
+LINUX: sudo apt-get update
+       apt-get install freeglut3-dev
        apt-get install libsdl2-dev
 make
 ./final
+
+
+If there is a problem with installing SDL2 on MAC:
+brew install sdl2
+sudo chown root:wheel /usr/local/bin/brew
+sudo brew link sdl2
+
+If there is a problem with installing SDL2 for LINUX:
+make sure to sudo apt-get update
+you might need to sudo apt-get upgrade
+
 
 
 Key Bindings

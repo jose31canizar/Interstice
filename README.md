@@ -7,7 +7,7 @@ Final Project:
 Jose Canizares
 CSCI4229/5229 Fall 2016
 
-Educational game teaching the quicksort algorithm with marble and granite objects.
+Run into the random objects and move them to the green squares on the ground to gain points.
 
 ###Instructions:
 

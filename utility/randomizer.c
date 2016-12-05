@@ -1,8 +1,10 @@
 #include "../objects/balusters.h"
 #include "math.h"
+#include "stdlib.h"
+#include "time.h"
 
 void load_initial_scene(double baluster_positions[][3]) {
-        int t;
+        time_t t;
         int i = 0;
         int shuffledNums[16] = {1, 4, 14, 8,
                                 3, 7, 13, 5,
@@ -11,15 +13,16 @@ void load_initial_scene(double baluster_positions[][3]) {
         /* Intializes random number generator */
         srand((unsigned) time(&t));
 
-        double spacing = 30.0;
+        double spacing = 20.0;
+        double starting_point_x = -180.0;
 
         /* Print 5 random numbers from 0 to 49 */
         for(i = 0; i < 16; i++)
         {
                 // baluster_positions[i][0] = (rand() % 16) * spacing;
-                baluster_positions[i][0] = shuffledNums[i] * spacing;
+                baluster_positions[i][0] = shuffledNums[i] * spacing + starting_point_x;
                 // baluster_positions[i][2] = (rand() % 50) * 10;
-                baluster_positions[i][2] = -60.0;
+                baluster_positions[i][2] = -50.0;
                 // printf("%d\n", rand() % 50);
         }
 }
