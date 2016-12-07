@@ -53,7 +53,7 @@ void load_progress(double baluster_positions[][3], double square_positions[][3],
                         fscanf(fp, "%lf %lf\n", p1, p2);
                 }
 
-                fscanf(fp, "%d\n", &square_index);
+                fscanf(fp, "%d\n", &*square_index);
 
                 for(i = 0; i < 16; i+= 1) {
                         p1 = &square_positions[i][0];

@@ -32,22 +32,17 @@ void load_initial_scene(double baluster_positions[][3], double square_positions[
 void load_squares(double square_positions[][3]) {
         time_t t;
         int i = 0;
-        double spacing = 6.0;
+        double spacing = 5.0;
         srand((unsigned) time(&t));
-        double starting_point_x = -30.0;
+        double starting_point = -150.0;
 
 
         for(i = 0; i < 16; i++)
         {
                 //initalize blue square positions
-                // square_positions[i][0] = (rand() % 16) * spacing;
-                // square_positions[i][2] = (rand() % 16) * spacing;
-
-                // square_positions[i][0] = (rand() % 16) * spacing;
-                // square_positions[i][2] = (rand() % 16) * spacing;
-
-                square_positions[i][0] = i * spacing + starting_point_x;
-                square_positions[i][2] = -60;
+                //-150 to 150
+                square_positions[i][0] = (rand() % 60) * spacing + starting_point;
+                square_positions[i][2] = (rand() % 60) * spacing + starting_point;
         }
 }
 
@@ -130,11 +125,28 @@ void generate_scene(double baluster_positions[][3], double wx, double wy, double
 
 void generate_square(double square_positions[][3], int *index, double posx, double posy, double posz) {
         // printf("%f\n", *index);
-        glPushMatrix();
-        glColor3f(0.55, 0.51, 0.91);
-        // glTranslated(posx, posy, posz);
-        glTranslated(square_positions[*index][0] + posx, posy, square_positions[*index][2] + posz);
-        drawRect(8, 8);
-        glPopMatrix();
+
+        for(int i = 0; i < *index+1; i++) {
+
+                if (*index == 16) {
+                        glPushMatrix();
+                        glColor3f(0.99, 0.11, 0.20);
+                        drawRect(150, 150);
+                        glPopMatrix();
+                } else {
+                        glPushMatrix();
+                        if (i == *index) {
+                                glColor3f(0.55, 0.51, 0.92);
+                        } else {
+                                glColor3f(0.99, 0.11, 0.20);
+                        }
+                        // glTranslated(posx, posy, posz);
+                        glTranslated(square_positions[i][0] + posx, posy, square_positions[i][2] + posz);
+                        drawRect(8, 8);
+                        glPopMatrix();
+                }
+
+        }
+
 
 }

@@ -168,11 +168,11 @@ void generate_squares_with_detection(double baluster_positions[][3], double squa
 
         int th = 0;
 
-        double a = 10.0; // amount of grab movement
+        // double a = 10.0; // amount of grab movement
         // int inc = 45.0;
         double r = 5.0; //object box width and height
         double box = 10.0; //character width and height
-        double d = 5.0; // collision distance
+        // double d = 5.0; // collision distance
 
         double ax = box; //width box
         double az = box; //height box
@@ -227,7 +227,7 @@ void generate_squares_with_detection(double baluster_positions[][3], double squa
 
         double A = a1*a2; //area of collision box
 
-        //local
+        //local coordinates
         for(j = 0; j < 4; j+= 1) {
                 if (j == 0) {
                         ox = baluster_positions[i][0] + r - square_positions[i][0];

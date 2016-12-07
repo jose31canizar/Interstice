@@ -334,35 +334,35 @@ void Vertex(double th,double ph)
  *     at (x,y,z)
  *     radius (r)
  */
-static void ball(double x,double y,double z,double r)
-{
-        int th,ph;
-        float yellow[] = {1.0,1.0,0.0,1.0};
-        float Emission[]  = {0.0,0.0,0.01*emission,1.0};
-        //  Save transformation
-        glPushMatrix();
-        //  Offset, scale and rotate
-        glTranslated(x,y,z);
-        glScaled(r,r,r);
-        //  White ball
-        glColor3f(1,1,1);
-        glMaterialf(GL_FRONT,GL_SHININESS,shiny);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,yellow);
-        glMaterialfv(GL_FRONT,GL_EMISSION,Emission);
-        //  Bands of latitude
-        for (ph=-90; ph<90; ph+=ball_inc)
-        {
-                glBegin(GL_QUAD_STRIP);
-                for (th=0; th<=360; th+=2*ball_inc)
-                {
-                        Vertex(th,ph);
-                        Vertex(th,ph+ball_inc);
-                }
-                glEnd();
-        }
-        //  Undo transformations
-        glPopMatrix();
-}
+// static void ball(double x,double y,double z,double r)
+// {
+//         int th,ph;
+//         float yellow[] = {1.0,1.0,0.0,1.0};
+//         float Emission[]  = {0.0,0.0,0.01*emission,1.0};
+//         //  Save transformation
+//         glPushMatrix();
+//         //  Offset, scale and rotate
+//         glTranslated(x,y,z);
+//         glScaled(r,r,r);
+//         //  White ball
+//         glColor3f(1,1,1);
+//         glMaterialf(GL_FRONT,GL_SHININESS,shiny);
+//         glMaterialfv(GL_FRONT,GL_SPECULAR,yellow);
+//         glMaterialfv(GL_FRONT,GL_EMISSION,Emission);
+//         //  Bands of latitude
+//         for (ph=-90; ph<90; ph+=ball_inc)
+//         {
+//                 glBegin(GL_QUAD_STRIP);
+//                 for (th=0; th<=360; th+=2*ball_inc)
+//                 {
+//                         Vertex(th,ph);
+//                         Vertex(th,ph+ball_inc);
+//                 }
+//                 glEnd();
+//         }
+//         //  Undo transformations
+//         glPopMatrix();
+// }
 
 void overlay()
 {
@@ -382,54 +382,18 @@ void overlay()
 
         glColor3f(1,1,1);
 
-
-        // glBindTexture(GL_TEXTURE_2D,texture[4]);
-        glColor3f(0.13,0.16,0.19);
-        //bottom bar
-        glBegin(GL_QUADS);
-        glTexCoord2d(0,0); glVertex2f(-2,-1);
-        glTexCoord2d(1,0); glVertex2f(+2,-1);
-        glTexCoord2d(1,1); glVertex2f(+2, -0.8);
-        glTexCoord2d(0,1); glVertex2f(-2, -0.8);
-        glEnd();
-
-        // glColor3f(0.8,0.6,0.6);
-
-        glColor3f(0.13,0.16,0.19);
-
-        glBegin(GL_QUADS);
-        //Top Bar
-        glVertex2f(-2.0,1);
-        glVertex2f(2.0,1);
-        glVertex2f(2.0,0.8);
-        glVertex2f(-2.0,0.8);
-        glEnd();
-
-        glColor3f(1.0, 1.0, 1.0);
-
-
-        glEnable(GL_TEXTURE_2D);
-        glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-        glBindTexture(GL_TEXTURE_2D,texture[10]);
-
-        glBegin(GL_QUADS);
-        glTexCoord2d(0.2,0.2); glVertex2f(0.85,-0.95);
-        glTexCoord2d(0.2,0.8); glVertex2f(0.85,-0.85);
-        glTexCoord2d(0.8,0.8); glVertex2f(0.95, -0.85);
-        glTexCoord2d(0.8,0.2); glVertex2f(0.95, -0.95);
-        glEnd();
-
-        for(int i = 0; i < 16; i++) {
-                glBegin(GL_QUADS);
-                glTexCoord2d(0.2,0.2); glVertex2f(0.0625*i - 0.15,-0.95);
-                glTexCoord2d(0.2,0.8); glVertex2f(0.0625*i - 0.15,-0.85);
-                glTexCoord2d(0.8,0.8); glVertex2f(0.0625*i - 0.05, -0.85);
-                glTexCoord2d(0.8,0.2); glVertex2f(0.0625*i - 0.05, -0.95);
+        glLineWidth(3.0);
+        for(int i = 0; i < square_index; i++) {
+                glBegin(GL_LINE_LOOP);
+                //Top Bar
+                glVertex2f(-1.0 + i*0.125,0.95);
+                glVertex2f(-1.0 + i*0.125 + 0.0625,0.95);
+                glVertex2f(-1.0 + i*0.125 + 0.0625,0.8);
+                glVertex2f(-1.0 + i*0.125,0.8);
                 glEnd();
         }
 
-        glDisable(GL_TEXTURE_2D);
+        glColor3f(1.0, 1.0, 1.0);
 
         //  Reset model view matrix
         glPopMatrix();
@@ -888,7 +852,7 @@ int display()
         float Position[]  = {distance*Cos(zh), ylight,distance*Sin(zh) - 500.0,1.0};
         //  Draw light position as ball (still no lighting here)
         glColor3f(1,1,1);
-        ball(Position[0],Position[1],Position[2], 5.0);
+        //ball(Position[0],Position[1],Position[2], 5.0);
         //  OpenGL should normalize normal vectors
         glEnable(GL_NORMALIZE);
         //  Enable lighting
@@ -1004,9 +968,10 @@ int display()
                 // wz += 5.0;
                 wz += fabs(boundary - -wz);
         }
+        checker(baluster_positions, square_positions, &square_index, -wx, wy, -wz);
         generate_scene_with_collision(baluster_positions, -wx, wy, -wz, th, grab);
         // generate_square(square_positions, &square_index, -wx, wy, -wz);
-        checker(baluster_positions, square_positions, &square_index, -wx, wy, -wz);
+
 
         // -wx + 4.0*Sin(th);
         glDisable(GL_POLYGON_OFFSET_FILL);
@@ -1103,7 +1068,7 @@ int display()
 
 
 
-        //overlay();
+        overlay();
 
 
         glFlush();
@@ -1135,7 +1100,7 @@ int main( int argc, char* args[] )
                 // SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
                 // SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
                 //Create window
-                gWindow = SDL_CreateWindow( "Interstice", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN |  SDL_WINDOW_RESIZABLE);
+                gWindow = SDL_CreateWindow( "Jose Canizares Final Project (Interstice)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN |  SDL_WINDOW_RESIZABLE);
                 if( gWindow == NULL )
                 {
                         printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
@@ -1189,6 +1154,8 @@ int main( int argc, char* args[] )
                         SDL_Event e;
 
                         //While application is running
+
+                        SDL_RenderPresent( gRenderer );
 
 
 

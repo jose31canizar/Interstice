@@ -1,14 +1,19 @@
 Final Project:
 
 I N T E R S T I C E
+A Simple Puzzle.
 
 Jose Canizares
 CSCI4229/5229 Fall 2016
 
 Run into the random objects and move them around!
-Use 'G' to grab onto them and drag them to the blue squares to collect symbols!
+Hold 'G' as you run into an object to grab onto them. Drag them around.
+Drag the smallest object (on the far left) to the blue square to turn it red.
+Keep dragging subsequently larger objects to the blue squares in ascending order.
+Collect all 16 rectangles.
 Notice you can use multiple keys and drag the screen around with the mouse.
 All objects are hand-made. (The textures are the only things not mine).
+Use 'F' to switch to "sand" mode.
 
 
 Instructions:
@@ -45,6 +50,7 @@ Key Bindings
   drag mouse vertical     camera up or down
   g         grab object
   2         save progress
+  f         change to "sand" mode
 
 
   ESC        Exit
