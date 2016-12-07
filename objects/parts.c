@@ -53,41 +53,7 @@ void drawCylinder(double base, double height, double radius) {
         glDisable(GL_TEXTURE_2D);
 }
 
-void circleFace_tex(double height, double radius, int tex) {
-        glPushMatrix();
 
-        int inc = 5;
-        int max = 390;
-
-        glEnable(GL_TEXTURE_2D);
-        glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE, GL_MODULATE);
-        glBindTexture(GL_TEXTURE_2D,texture[tex]);
-
-        // glBegin(GL_TRIANGLE_STRIP);
-        glBegin(GL_TRIANGLE_FAN);
-        glTexCoord2f(0.5, 0.5);
-        glNormal3f(0,height,0);
-        glVertex3f(0.0, height, 0.0);
-
-
-
-        for (int i=0; i < max; i+= inc)
-        {
-                //glColor3f(0.548,0.2,0.7);
-                //glColor3f(0.148,0.11,0.13);
-                // glColor3f(0.4, Cos((double)i), 0.2);
-
-                glTexCoord2f(0.5*Cos(i)+0.5,0.5*Sin(i)+0.5);
-
-                glVertex3f(Cos(i)*radius,height,Sin(i)*radius);
-
-                //glVertex3f(0.0, height, 0.0);
-        }
-        glEnd();
-        glPopMatrix();
-
-        glDisable(GL_TEXTURE_2D);
-}
 
 //draws a column
 //x, y, z
@@ -152,12 +118,15 @@ void drawCircle(float radius) {
 }
 
 void drawRect(float w, float h) {
-        glBegin(GL_LINE_LOOP);
+        glPushMatrix();
+        glRotated(90, 1, 0, 0);
+        glBegin(GL_QUADS);
         glVertex2f(-w, h);
         glVertex2f(w, h);
         glVertex2f(w, -h);
         glVertex2f(-w, -h);
         glEnd();
+        glPopMatrix();
 }
 
 
@@ -334,4 +303,42 @@ void circle5(double fraction, double flute_radius, double radius, double theta, 
                 }
         }
         //glEnd();
+}
+
+
+
+void circleFace_tex(double height, double radius, int tex) {
+        glPushMatrix();
+
+        int inc = 5;
+        int max = 390;
+
+        glEnable(GL_TEXTURE_2D);
+        glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glBindTexture(GL_TEXTURE_2D,texture[tex]);
+
+        // glBegin(GL_TRIANGLE_STRIP);
+        glBegin(GL_TRIANGLE_FAN);
+        glTexCoord2f(0.5, 0.5);
+        glNormal3f(0,height,0);
+        glVertex3f(0.0, height, 0.0);
+
+
+
+        for (int i=0; i < max; i+= inc)
+        {
+                //glColor3f(0.548,0.2,0.7);
+                //glColor3f(0.148,0.11,0.13);
+                // glColor3f(0.4, Cos((double)i), 0.2);
+
+                glTexCoord2f(0.5*Cos(i)+0.5,0.5*Sin(i)+0.5);
+
+                glVertex3f(Cos(i)*radius,height,Sin(i)*radius);
+
+                //glVertex3f(0.0, height, 0.0);
+        }
+        glEnd();
+        glPopMatrix();
+
+        glDisable(GL_TEXTURE_2D);
 }

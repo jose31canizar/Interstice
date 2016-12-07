@@ -1,7 +1,7 @@
 #include "randomizer.h"
 #include <stdio.h>
 
-void load_progress(double baluster_positions[][3]) {
+void load_progress(double baluster_positions[][3], double square_positions[][3], int *square_index) {
         FILE *fp = fopen("progress.txt", "r");
 
         //File does not exist
@@ -9,6 +9,7 @@ void load_progress(double baluster_positions[][3]) {
                 printf("First time opening game...\n");
                 //randomize
                 load_initial_scene(baluster_positions);
+                load_squares(square_positions);
 
                 fp = fopen("progress.txt", "w+");
 
@@ -21,6 +22,15 @@ void load_progress(double baluster_positions[][3]) {
                         for(i = 0; i < 16; i+= 1) {
                                 p1 = baluster_positions[i][0];
                                 p2 = baluster_positions[i][2];
+                                //write to file
+                                fprintf(fp, "%f %f\n", p1, p2);
+                        }
+
+                        fprintf(fp, "%d\n", *square_index);
+
+                        for(i = 0; i < 16; i+= 1) {
+                                p1 = square_positions[i][0];
+                                p2 = square_positions[i][2];
                                 //write to file
                                 fprintf(fp, "%f %f\n", p1, p2);
                         }
@@ -42,13 +52,22 @@ void load_progress(double baluster_positions[][3]) {
                         //read from file
                         fscanf(fp, "%lf %lf\n", p1, p2);
                 }
+
+                fscanf(fp, "%d\n", &square_index);
+
+                for(i = 0; i < 16; i+= 1) {
+                        p1 = &square_positions[i][0];
+                        p2 = &square_positions[i][2];
+                        //write to file
+                        fscanf(fp, "%lf %lf\n", p1, p2);
+                }
                 // printf("%f %f\n", baluster_positions[0][0], baluster_positions[0][2]);
 
                 fclose(fp);
         }
 }
 
-void save_progress(double baluster_positions[][3]) {
+void save_progress(double baluster_positions[][3], double square_positions[][3], int *square_index) {
         FILE *fp = fopen("progress.txt", "r+"); //reading and writing
 
         if (fp != NULL) {
@@ -60,6 +79,15 @@ void save_progress(double baluster_positions[][3]) {
                 for(i = 0; i < 16; i+= 1) {
                         p1 = baluster_positions[i][0];
                         p2 = baluster_positions[i][2];
+                        //write to file
+                        fprintf(fp, "%f %f\n", p1, p2);
+                }
+
+                fprintf(fp, "%d\n", *square_index);
+
+                for(i = 0; i < 16; i+= 1) {
+                        p1 = square_positions[i][0];
+                        p2 = square_positions[i][2];
                         //write to file
                         fprintf(fp, "%f %f\n", p1, p2);
                 }

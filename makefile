@@ -22,15 +22,17 @@ ifeq "$(shell uname)" "Darwin"
 # -I/usr/include/SDL2 -D_THREAD_SAFE
 #
 #CFLG=-O3 -Wall -Wno-deprecated-declarations -I/Library/Frameworks/SDL2.framework/Headers -I/Library/Frameworks/SDL2_mixer.framework/Headers -F/Library/Frameworks -framework OpenGL
-CFLG=-O3 -Wall -Wno-deprecated-declarations -I SDL2.framework/Headers -F/Library/Frameworks -framework OpenGL -I /Library/Frameworks/Headers
+CFLG=-O3 -Wall -Wno-deprecated-declarations -I SDL2.framework/Headers -F/Library/Frameworks -I /Library/Frameworks/Headers
 
 SDL_CFLAGS=-I/usr/local/include -L/usr/local/lib
 SDL_LDFLAGS=-lSDL2
+GL_FLAG=-framework OpenGL
 #  Linux/Unix/Solaris
 else
 CFLG=-Wall -lSDL2 -lGLU -lGL -lm -lglut -I/usr/local/include -L/usr/local/lib
 SDL_CFLAGS= `sdl2-config --cflags`
 SDL_LDFLAGS= `sdl2-config --libs`
+GL_FLAG=-lGL
 endif
 #  OSX/Linux/Unix/Solaris
 CLEAN=rm -f $(EXE) *.o *.a *.txt
@@ -62,6 +64,8 @@ save_progress.o: utility/save_progress.c utility/save_progress.h utility/randomi
 		gcc -c $< $(CFLG)-o $@ $(SDL_CFLAGS) $(SDL_LDFLAGS) ../setup/GL.h
 collision.o: utility/collision.c utility/collision.h utility/randomizer.h
 		gcc -c $< $(CFLG)-o $@ $(SDL_CFLAGS) $(SDL_LDFLAGS) ../setup/GL.h
+logic.o: utility/logic.h utility/collision.h
+		gcc -c $< $(CFLG)-o $@ $(SDL_CFLAGS) $(SDL_LDFLAGS) utility/collision.h
 
 
 #Create Archive
@@ -78,8 +82,8 @@ main.o: main.c CSCIx229.h
 
 #  Link
 # -lSDL -lSDL_mixer -lGLU -lGL -lm
-final: main.o CSCIx229.a objects/character.o objects/floors.o objects/parts.o objects/jars.o objects/bezier.o objects/balusters.o objects/columns.o utility/randomizer.o utility/save_progress.o utility/collision.o
-	gcc main.c objects/character.c objects/floors.c objects/parts.c objects/jars.c objects/bezier.c objects/balusters.c objects/columns.c utility/randomizer.c utility/save_progress.c utility/collision.c CSCIx229.a $(CFLG) -o $@ $(SDL_CFLAGS) $(SDL_LDFLAGS)
+final: main.o CSCIx229.a objects/character.o objects/parts.o objects/floors.o objects/jars.o objects/bezier.o objects/balusters.o objects/columns.o utility/randomizer.o utility/save_progress.o utility/collision.o utility/logic.o
+	gcc main.c objects/character.c objects/parts.c objects/floors.c objects/jars.c objects/bezier.c objects/balusters.c objects/columns.c utility/randomizer.c utility/save_progress.c utility/collision.c utility/logic.c CSCIx229.a $(CFLG) -o $@ $(SDL_CFLAGS) $(SDL_LDFLAGS)  $(GL_FLAG)
 
 #  Clean
 clean:

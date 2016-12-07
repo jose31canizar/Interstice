@@ -12,16 +12,14 @@
 // #else
 // #include <GL/glut.h>
 // #endif
+
 #include "setup/GL.h"
 #include <stdio.h>
 #include "utility/save_progress.h"
-
 #include "objects/character.h"
+#include "objects/parts.h"
 #include "objects/floors.h"
-
-// #include "objects/bezier.h"
 #include "objects/jars.h"
-// #include "objects/balusters.h"
 #include "utility/randomizer.h"
 #include "main.h"
 #include "math.h"
@@ -31,7 +29,10 @@
 #include "utility/collision.h"
 #include "objects/columns.h"
 #include "objects/balusters.h"
-#include "objects/parts.h"
+#include "utility/logic.h"
+#include "utility/randomizer.h"
+
+
 
 
 double start = 0.0;
@@ -64,6 +65,8 @@ double u = 0;  //up
 double dist = 0.2; //viewing distance
 double init_dist = 0.2;
 double max_dist = 0.4;
+
+int isFloor = 0;
 
 int balustrade_list;
 int colonnade_list;
@@ -139,6 +142,25 @@ double baluster_positions[16][3] = {{0, 0, 0},
                                     {0, 0, 0},
                                     {0, 0, 0}};
 
+int square_index = 0;
+
+double square_positions[16][3] = {{0, 0, 0},
+                                  {0, 0, 0},
+                                  {0, 0, 0},
+                                  {0, 0, 0},                                                                       //
+                                  {0, 0, 0},
+                                  {0, 0, 0},
+                                  {0, 0, 0},
+                                  {0, 0, 0},                                                                       //
+                                  {0, 0, 0},
+                                  {0, 0, 0},
+                                  {0, 0, 0},
+                                  {0, 0, 0},                                                                       //
+                                  {0, 0, 0},
+                                  {0, 0, 0},
+                                  {0, 0, 0},
+                                  {0, 0, 0}};
+
 //Starts up SDL and creates window
 int init();
 
@@ -147,6 +169,8 @@ int loadMedia();
 
 //Frees media and shuts down SDL
 void SDL_close();
+
+void circleFace_tex();
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -553,7 +577,7 @@ void handleEvent( SDL_Event* e )
 
         } else if (keystate[SDL_SCANCODE_2]) {
 
-                save_progress(baluster_positions);
+                save_progress(baluster_positions, square_positions, &square_index);
 
         } else if (keystate[SDL_SCANCODE_3]) {
 
@@ -628,6 +652,14 @@ void handleEvent( SDL_Event* e )
                 case SDLK_g:
                         grab = 1;
                         break;
+                case SDLK_f:
+                        if(!isFloor) {
+                                isFloor = 1;
+                        } else {
+                                isFloor = 0;
+                        }
+                        break;
+
                 default:
                         break;
                 }
@@ -827,10 +859,12 @@ int display()
 
         glColor3f(0.96, 0.68, 0.81);
 
-        //Floor();
-
-
-
+        if (isFloor) {
+                glPushMatrix();
+                glTranslated(0.0, -3.0, 0.0);
+                Floor();
+                glPopMatrix();
+        }
 
         // glBegin(GL_LINE_STRIP);
         // glVertex3f(0, 0, 0);
@@ -844,7 +878,6 @@ int display()
         //Lighting
         glShadeModel(GL_SMOOTH);
 
-        // printf("%f", start);
         zh = fmod(90*start,360.0);
 
         //  Translate intensity to color vectors
@@ -890,6 +923,7 @@ int display()
         // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         // glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
         // glLineWidth(1.5);
+
         if (momentum_w > 0) {
                 status.wr += (momentum_w*0.02);
                 status.wr = fmod(status.wr, 360.0);
@@ -917,6 +951,8 @@ int display()
         glPopMatrix();
 
         draw_balusters(wx, wy, wz);
+
+
         //glEnable(GL_POLYGON_OFFSET_FILL);
         //glPolygonOffset(1,1);
         if (momentum_w > 0) {
@@ -969,7 +1005,8 @@ int display()
                 wz += fabs(boundary - -wz);
         }
         generate_scene_with_collision(baluster_positions, -wx, wy, -wz, th, grab);
-
+        // generate_square(square_positions, &square_index, -wx, wy, -wz);
+        checker(baluster_positions, square_positions, &square_index, -wx, wy, -wz);
 
         // -wx + 4.0*Sin(th);
         glDisable(GL_POLYGON_OFFSET_FILL);
@@ -1007,7 +1044,7 @@ int display()
 
         //redraw
         glPushMatrix();
-        glTranslated(0, 0, -180);
+        glTranslated(-wx, 0, -180 - wz);
         glRotated(90, 0, 1, 0);
         glScaled(1.5, 1.5, 1.5);
         glCallList(balustrade_list);
@@ -1145,7 +1182,8 @@ int main( int argc, char* args[] )
 
                         compile2();
 
-                        load_progress(baluster_positions);
+                        load_progress(baluster_positions, square_positions, &square_index);
+                        //load_squares(square_positions);
 
                         //Event handler
                         SDL_Event e;

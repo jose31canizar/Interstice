@@ -1,9 +1,12 @@
+#include "../setup/GL.h"
 #include "../objects/balusters.h"
 #include "math.h"
 #include "stdlib.h"
 #include "time.h"
+#include "logic.h"
+#include "../objects/parts.h"
 
-void load_initial_scene(double baluster_positions[][3]) {
+void load_initial_scene(double baluster_positions[][3], double square_positions[][3]) {
         time_t t;
         int i = 0;
         int shuffledNums[16] = {1, 4, 14, 8,
@@ -19,11 +22,24 @@ void load_initial_scene(double baluster_positions[][3]) {
         /* Print 5 random numbers from 0 to 49 */
         for(i = 0; i < 16; i++)
         {
-                // baluster_positions[i][0] = (rand() % 16) * spacing;
                 baluster_positions[i][0] = shuffledNums[i] * spacing + starting_point_x;
                 // baluster_positions[i][2] = (rand() % 50) * 10;
                 baluster_positions[i][2] = -50.0;
                 // printf("%d\n", rand() % 50);
+        }
+}
+
+void load_squares(double square_positions[][3]) {
+        time_t t;
+        int i = 0;
+        double spacing = 10.0;
+        srand((unsigned) time(&t));
+
+        for(i = 0; i < 16; i++)
+        {
+                //initalize blue square positions
+                square_positions[i][0] = (rand() % 16) * spacing;
+                square_positions[i][2] = (rand() % 16) * spacing;
         }
 }
 
@@ -101,5 +117,19 @@ void generate_scene(double baluster_positions[][3], double wx, double wy, double
                 }
                 //baluster_1(wx + baluster_positions[i][0], wy, wz + baluster_positions[i][2]);
                 // printf("%d\n", rand() % 50);
+        }
+}
+
+void generate_square(double square_positions[][3], int *index, double wx, double wy, double wz) {
+        // printf("%f\n", square_positions[1][0]);
+        for(int i = 0; i < 16; i++) {
+                if (i == *index) {
+                        glPushMatrix();
+                        glColor3f(0.55, 0.51, 0.91);
+                        glTranslated(square_positions[i][0] + wx, 0.0, square_positions[i][2] + wz);
+                        drawRect(8, 8);
+                        glPopMatrix();
+                }
+
         }
 }
