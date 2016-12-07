@@ -32,14 +32,22 @@ void load_initial_scene(double baluster_positions[][3], double square_positions[
 void load_squares(double square_positions[][3]) {
         time_t t;
         int i = 0;
-        double spacing = 10.0;
+        double spacing = 6.0;
         srand((unsigned) time(&t));
+        double starting_point_x = -30.0;
+
 
         for(i = 0; i < 16; i++)
         {
                 //initalize blue square positions
-                square_positions[i][0] = (rand() % 16) * spacing;
-                square_positions[i][2] = (rand() % 16) * spacing;
+                // square_positions[i][0] = (rand() % 16) * spacing;
+                // square_positions[i][2] = (rand() % 16) * spacing;
+
+                // square_positions[i][0] = (rand() % 16) * spacing;
+                // square_positions[i][2] = (rand() % 16) * spacing;
+
+                square_positions[i][0] = i * spacing + starting_point_x;
+                square_positions[i][2] = -60;
         }
 }
 
@@ -120,16 +128,13 @@ void generate_scene(double baluster_positions[][3], double wx, double wy, double
         }
 }
 
-void generate_square(double square_positions[][3], int *index, double wx, double wy, double wz) {
-        // printf("%f\n", square_positions[1][0]);
-        for(int i = 0; i < 16; i++) {
-                if (i == *index) {
-                        glPushMatrix();
-                        glColor3f(0.55, 0.51, 0.91);
-                        glTranslated(square_positions[i][0] + wx, 0.0, square_positions[i][2] + wz);
-                        drawRect(8, 8);
-                        glPopMatrix();
-                }
+void generate_square(double square_positions[][3], int *index, double posx, double posy, double posz) {
+        // printf("%f\n", *index);
+        glPushMatrix();
+        glColor3f(0.55, 0.51, 0.91);
+        // glTranslated(posx, posy, posz);
+        glTranslated(square_positions[*index][0] + posx, posy, square_positions[*index][2] + posz);
+        drawRect(8, 8);
+        glPopMatrix();
 
-        }
 }

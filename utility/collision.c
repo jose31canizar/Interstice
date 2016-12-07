@@ -227,22 +227,20 @@ void generate_squares_with_detection(double baluster_positions[][3], double squa
 
         double A = a1*a2; //area of collision box
 
-
+        //local
         for(j = 0; j < 4; j+= 1) {
-
-                //object box points from viewport perspective
                 if (j == 0) {
-                        ox = square_positions[i][0] + r + wx;
-                        oz = square_positions[i][2] + r + wz;
+                        ox = baluster_positions[i][0] + r - square_positions[i][0];
+                        oz = baluster_positions[i][2] + r - square_positions[i][2];
                 } else if (j == 1) {
-                        ox = square_positions[i][0] - r + wx;
-                        oz = square_positions[i][2] + r + wz;
+                        ox = baluster_positions[i][0] - r - square_positions[i][0];
+                        oz = baluster_positions[i][2] + r - square_positions[i][2];
                 } else if (j == 2) {
-                        ox = square_positions[i][0] - r + wx;
-                        oz = square_positions[i][2] - r + wz;
+                        ox = baluster_positions[i][0] - r - square_positions[i][0];
+                        oz = baluster_positions[i][2] - r - square_positions[i][2];
                 } else if (j == 3) {
-                        ox = square_positions[i][0] + r + wx;
-                        oz = square_positions[i][2] - r + wz;
+                        ox = baluster_positions[i][0] + r - square_positions[i][0];
+                        oz = baluster_positions[i][2] - r - square_positions[i][2];
                 }
 
                 //lengths from point to each corner
