@@ -1,6 +1,6 @@
 Final Project:
 
-I N T E R S T I C E
+## I N T E R S T I C E
 A Simple Puzzle.
 
 Jose Canizares
@@ -16,29 +16,31 @@ All objects are hand-made. (The textures are the only things not mine).
 Use 'F' to switch to "sand" mode.
 
 
-Instructions:
+## Instructions:
 
-MAC: brew install sdl2
+### MAC:
+       brew install sdl2
 
-LINUX: sudo apt-get update
+### LINUX: 
+       sudo apt-get update
        apt-get install freeglut3-dev
        apt-get install libsdl2-dev
 make
 ./final
 
 
-If there is a problem with installing SDL2 on MAC:
-brew install sdl2
-sudo chown root:wheel /usr/local/bin/brew
-sudo brew link sdl2
+### If there is a problem with installing SDL2 on MAC:
+⋅⋅* brew install sdl2
+⋅⋅* sudo chown root:wheel /usr/local/bin/brew
+⋅⋅* sudo brew link sdl2
 
-If there is a problem with installing SDL2 for LINUX:
-make sure to sudo apt-get update
-you might need to sudo apt-get upgrade
+### If there is a problem with installing SDL2 for LINUX:
+⋅⋅* make sure to sudo apt-get update
+⋅⋅* you might need to sudo apt-get upgrade
 
 
 
-Key Bindings
+## Key Bindings
   a         move left
   d         move right
   w         move forward
