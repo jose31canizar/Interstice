@@ -41,18 +41,18 @@ make
 
 
 ## Key Bindings
-  a         move left
-  d         move right
-  w         move forward
-  s         move backward
-  arrows    camera up, down, left, right
-  z         zoom out
-  x         zoom in
-  drag mouse horizontal   camera left or right
-  drag mouse vertical     camera up or down
-  g         grab object
-  2         save progress
-  f         change to "sand" mode
+⋅⋅*  a         move left
+⋅⋅*  d         move right
+⋅⋅*  w         move forward
+⋅⋅*  s         move backward
+⋅⋅*  arrows    camera up, down, left, right
+⋅⋅*  z         zoom out
+⋅⋅*  x         zoom in
+⋅⋅*  drag mouse horizontal   camera left or right
+⋅⋅*  drag mouse vertical     camera up or down
+⋅⋅*  g         grab object
+⋅⋅*  2         save progress
+⋅⋅*  f         change to "sand" mode
 
 
-  ESC        Exit
+⋅⋅*  ESC        Exit
